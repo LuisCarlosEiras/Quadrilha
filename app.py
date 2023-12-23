@@ -1,155 +1,36 @@
-<html>
-    <head>
-        <meta charset="utf-8">
-        
-            <script src="lib/bindings/utils.js"></script>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-            
-        
-<center>
-<h1></h1>
-</center>
+import warnings
+warnings.filterwarnings("ignore")
 
-<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
-<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
-        <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
-          crossorigin="anonymous"
-        />
-        <script
-          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
-          crossorigin="anonymous"
-        ></script>
+from pyvis.network import Network
+import networkx as nx
 
+# Criação do grafo direcionado
+G = nx.DiGraph()
 
-        <center>
-          <h1></h1>
-        </center>
-        <style type="text/css">
+# Adicionando as arestas ao grafo
+G.add_edge("João", "Teresa", action="amava")
+G.add_edge("Teresa", "Raimundo", action="amava")
+G.add_edge("Raimundo", "Maria", action="amava")
+G.add_edge("Maria", "Joaquim", action="amava")
+G.add_edge("Joaquim", "Lili", action="amava")
+G.add_edge("Lili", "ninguém", action="amava")
+G.add_edge("João", "Estados Unidos", action="foi pra")
+G.add_edge("Teresa", "convento", action="foi para")
+G.add_edge("Raimundo", "desastre", action="morreu de")
+G.add_edge("Maria", "tia", action="ficou para")
+G.add_edge("Joaquim", "suicídio", action="cometeu")
+G.add_edge("Lili", "J. Pinto Fernandes", action="casou com")
+G.add_edge("J. Pinto Fernandes", "história", action="que não tinha entrado na")
+G.add_edge("Quadrilha","Drummond", action="autor")
 
-             #mynetwork {
-                 width: 100%;
-                 height: 600px;
-                 background-color: #ffffff;
-                 border: 1px solid lightgray;
-                 position: relative;
-                 float: left;
-             }
+# Criação do grafo interativo
+net = Network(notebook=True)
+net.from_nx(G)
 
-             
-
-             
-
-             
-        </style>
-    </head>
-
-
-    <body>
-        <div class="card" style="width: 100%">
-            
-            
-            <div id="mynetwork" class="card-body"></div>
-        </div>
-
-        
-        
-
-        <script type="text/javascript">
-
-              // initialize global variables.
-              var edges;
-              var nodes;
-              var allNodes;
-              var allEdges;
-              var nodeColors;
-              var originalNodes;
-              var network;
-              var container;
-              var options, data;
-              var filter = {
-                  item : '',
-                  property : '',
-                  value : []
-              };
-
-              
-
-              
-
-              // This method is responsible for drawing the graph, returns the drawn network
-              function drawGraph() {
-                  var container = document.getElementById('mynetwork');
-
-                  
-
-                  // parsing and collecting nodes and edges from the python
-                  nodes = new vis.DataSet([{"color": "#97c2fc", "id": "Jo\u00e3o", "label": "Jo\u00e3o", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Teresa", "label": "Teresa", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Estados Unidos", "label": "Estados Unidos", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Raimundo", "label": "Raimundo", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "convento", "label": "convento", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Maria", "label": "Maria", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "desastre", "label": "desastre", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Joaquim", "label": "Joaquim", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "tia", "label": "tia", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Lili", "label": "Lili", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "suic\u00eddio", "label": "suic\u00eddio", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "ningu\u00e9m", "label": "ningu\u00e9m", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "J. Pinto Fernandes", "label": "J. Pinto Fernandes", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "hist\u00f3ria", "label": "hist\u00f3ria", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Quadrilha", "label": "Quadrilha", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Drummond", "label": "Drummond", "shape": "dot", "size": 10}]);
-                  edges = new vis.DataSet([{"action": "amava", "arrows": "to", "from": "Jo\u00e3o", "title": "amava", "to": "Teresa", "width": 1}, {"action": "foi pra", "arrows": "to", "from": "Jo\u00e3o", "title": "foi pra", "to": "Estados Unidos", "width": 1}, {"action": "amava", "arrows": "to", "from": "Teresa", "title": "amava", "to": "Raimundo", "width": 1}, {"action": "foi para", "arrows": "to", "from": "Teresa", "title": "foi para", "to": "convento", "width": 1}, {"action": "amava", "arrows": "to", "from": "Raimundo", "title": "amava", "to": "Maria", "width": 1}, {"action": "morreu de", "arrows": "to", "from": "Raimundo", "title": "morreu de", "to": "desastre", "width": 1}, {"action": "amava", "arrows": "to", "from": "Maria", "title": "amava", "to": "Joaquim", "width": 1}, {"action": "ficou para", "arrows": "to", "from": "Maria", "title": "ficou para", "to": "tia", "width": 1}, {"action": "amava", "arrows": "to", "from": "Joaquim", "title": "amava", "to": "Lili", "width": 1}, {"action": "cometeu", "arrows": "to", "from": "Joaquim", "title": "cometeu", "to": "suic\u00eddio", "width": 1}, {"action": "amava", "arrows": "to", "from": "Lili", "title": "amava", "to": "ningu\u00e9m", "width": 1}, {"action": "casou com", "arrows": "to", "from": "Lili", "title": "casou com", "to": "J. Pinto Fernandes", "width": 1}, {"action": "que n\u00e3o tinha entrado na", "arrows": "to", "from": "J. Pinto Fernandes", "title": "que n\u00e3o tinha entrado na", "to": "hist\u00f3ria", "width": 1}, {"action": "autor", "arrows": "to", "from": "Quadrilha", "title": "autor", "to": "Drummond", "width": 1}]);
-
-                  nodeColors = {};
-                  allNodes = nodes.get({ returnType: "Object" });
-                  for (nodeId in allNodes) {
-                    nodeColors[nodeId] = allNodes[nodeId].color;
-                  }
-                  allEdges = edges.get({ returnType: "Object" });
-                  // adding nodes and edges to the graph
-                  data = {nodes: nodes, edges: edges};
-
-                  var options = {
-    "configure": {
-        "enabled": false
-    },
-    "edges": {
-        "color": {
-            "inherit": true
-        },
-        "smooth": {
-            "enabled": true,
-            "type": "dynamic"
-        }
-    },
-    "interaction": {
-        "dragNodes": true,
-        "hideEdgesOnDrag": false,
-        "hideNodesOnDrag": false
-    },
-    "physics": {
-        "enabled": true,
-        "stabilization": {
-            "enabled": true,
-            "fit": true,
-            "iterations": 1000,
-            "onlyDynamicEdges": false,
-            "updateInterval": 50
-        }
-    }
-};
-
-                  
-
-
-                  
-
-                  network = new vis.Network(container, data, options);
-
-                  
-
-                  
-
-                  
-
-
-                  
-
-                  return network;
-
-              }
-              drawGraph();
-        </script>
-    </body>
-</html>
+# Configuração das arestas para mostrar a ação quando o mouse passa por cima
+for edge in net.edges:
+    edge['title'] = edge['action']
+    edge['arrows'] = 'to' # Adicionando seta nas arestas
+# cdn_resources='in_line'
+# Mostrando o grafo
+net.show("grafo.html")
