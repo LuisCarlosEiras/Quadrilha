@@ -8,6 +8,8 @@ with open("grafo.html", "r") as f:
 
 st.header("Quadrilha")
 
+st.markdown(f'<iframe srcdoc="{html_data}" width="1000" height="600"></iframe>', unsafe_allow_html=True)
+
 # st.subheader('Using components.v1.html')
 st.code('''st.components.v1.html(html_data)''', language='python')
 st.components.v1.html(html_data)
