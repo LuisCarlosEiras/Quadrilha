@@ -1,6 +1,3 @@
-import warnings
-warnings.filterwarnings("ignore")
-
 from pyvis.network import Network
 import networkx as nx
 
