@@ -1,8 +1,9 @@
 # https://discuss.streamlit.io/t/unable-to-load-html-file-in-streamlit-app/40186/2
 
 import streamlit as st
+from pyvis.network import Network
 import networkx as nx
-import matplotlib.pyplot as plt
+import os
 
 # Criação do grafo direcionado
 G = nx.DiGraph()
@@ -23,14 +24,22 @@ G.add_edge("Lili", "J. Pinto Fernandes", action="casou com")
 G.add_edge("J. Pinto Fernandes", "história", action="que não tinha entrado na")
 G.add_edge("Quadrilha", "Drummond", action="autor")
 
-# Criando a visualização do grafo usando Matplotlib
-pos = nx.spring_layout(G)  # Pode ajustar o layout conforme necessário
-labels = nx.get_edge_attributes(G, 'action')
-nx.draw(G, pos, with_labels=True, font_weight='bold', node_size=700, node_color='skyblue', font_size=8)
-nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
+# Criação do grafo interativo
+net = Network(notebook=False)
+net.from_nx(G)
 
-# Exibindo a visualização no Streamlit
-st.pyplot(plt)
+# Configuração das arestas para mostrar a ação quando o mouse passa por cima
+for edge in net.edges:
+    edge['title'] = edge['action']
+    edge['arrows'] = 'to'  # Adicionando seta nas arestas
 
+# Salvar o grafo como um arquivo HTML temporário
+temp_html_file = "temp_graph.html"
+net.show(temp_html_file)
 
+# Exibir o grafo HTML no Streamlit
+with open(temp_html_file, "r", encoding="utf-8") as f:
+    st.components.v1.html(f.read(), width=800, height=600)
 
+# Remover o arquivo temporário
+os.remove(temp_html_file)
