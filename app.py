@@ -6,8 +6,6 @@ with open("grafo.html", "r") as f:
 
 st.header("Quadrilha")
 
-
-
 st.subheader('Using components.v1.html')
 st.code('''st.components.v1.html(html_data)''', language='python')
 st.components.v1.html(html_data)
