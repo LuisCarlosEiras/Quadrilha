@@ -4,11 +4,11 @@ import streamlit as st
 with open("grafo.html", "r") as f:
     html_data = f.read()
 
-st.header("Deepchecks")
+st.header("Quadrilha")
 
-st.write('---')
+# st.write('---')
 
-st.subheader('Using st.markdown')
+# st.subheader('Using st.markdown')
 st.code('''st.markdown(html_data, unsafe_allow_html=True)''', language='python')
 st.markdown(html_data, unsafe_allow_html=True)
 
