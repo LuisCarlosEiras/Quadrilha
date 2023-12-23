@@ -8,6 +8,6 @@ with open("grafo.html", "r") as f:
 # st.markdown(f'<iframe srcdoc="{html_data}" width="1000" height="600"></iframe>', unsafe_allow_html=True)
 
 st.code('''st.components.v1.html(html_data)''', language='python')
-st.components.v1.html(html_data)
+# st.components.v1.html(html_data)
 
 
